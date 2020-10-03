@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "8823432775",
+    "firebase_url": "https://uber-clone-68d27.firebaseio.com",
+    "project_id": "uber-clone-68d27",
+    "storage_bucket": "uber-clone-68d27.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:8823432775:android:8018995d7b153cb0a5f362",
+        "android_client_info": {
+          "package_name": "com.anuzpandey.cab_rider"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "8823432775-0aqepk5j2hu64fl8a8i7cmnbmkepbte8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7zhVJEnS57b0kdyUNsSzfqYrPFwrf6Jo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "8823432775-0aqepk5j2hu64fl8a8i7cmnbmkepbte8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
