@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:cab_rider/screens/login/login_screen.dart';
+import 'package:cab_rider/screens/main_screen.dart';
+import 'package:cab_rider/screens/registration/registration_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -39,7 +41,13 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: LoginScreen(),
+      home: RegisterScreen(),
+      initialRoute: RegisterScreen.routeName,
+      routes: {
+        MainPage.routeName: (context) => MainPage(),
+        RegisterScreen.routeName: (context) => RegisterScreen(),
+        LoginScreen.routeName: (context) => LoginScreen(),
+      },
     );
   }
 }

@@ -1,9 +1,28 @@
 import 'package:cab_rider/assets/resources/brand_colors.dart';
 import 'package:cab_rider/components/fill_button.dart';
-import 'package:cab_rider/screens/registration/registration_screen.dart';
+import 'package:cab_rider/screens/login/login_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Body extends StatelessWidget {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  var fullNameController = TextEditingController();
+  var phoneNumberController = TextEditingController();
+  var emailController = TextEditingController();
+  var passwordController = TextEditingController();
+
+  void registerUser() async {
+    final FirebaseUser user = (await _auth.createUserWithEmailAndPassword(
+      email: emailController.text,
+      password: passwordController.text,
+    )).user;
+
+    if (user != null) {
+      print('Reg Successfull.');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -21,7 +40,7 @@ class Body extends StatelessWidget {
               ),
               SizedBox(height: 70),
               Text(
-                "Sign In as a Rider",
+                "Create a Rider's Account",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 25, fontFamily: 'Brand-Bold'),
               ),
@@ -30,6 +49,22 @@ class Body extends StatelessWidget {
                 child: Column(
                   children: [
                     TextField(
+                      controller: fullNameController,
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                          labelText: 'Full Name',
+                          labelStyle: TextStyle(
+                            fontSize: 14.0,
+                          ),
+                          hintStyle: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 10.0,
+                          )),
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    SizedBox(height: 10),
+                    TextField(
+                      controller: emailController,
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                           labelText: 'Email Address',
@@ -44,6 +79,22 @@ class Body extends StatelessWidget {
                     ),
                     SizedBox(height: 10),
                     TextField(
+                      controller: phoneNumberController,
+                      keyboardType: TextInputType.phone,
+                      decoration: InputDecoration(
+                          labelText: 'Phone',
+                          labelStyle: TextStyle(
+                            fontSize: 14.0,
+                          ),
+                          hintStyle: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 10.0,
+                          )),
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    SizedBox(height: 10),
+                    TextField(
+                      controller: passwordController,
                       obscureText: true,
                       decoration: InputDecoration(
                           labelText: 'Password',
@@ -58,19 +109,20 @@ class Body extends StatelessWidget {
                     ),
                     SizedBox(height: 40),
                     FillButton(
-                      title: 'Login',
+                      title: 'Register',
                       color: BrandColors.colorGreen,
-                      onPressed: () {},
+                      onPressed: () {
+                        registerUser();
+                      },
                     ),
                   ],
                 ),
               ),
               FlatButton(
                   onPressed: () {
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, RegisterScreen.routeName, (route) => false);
+                    Navigator.pushNamed(context, LoginScreen.routeName);
                   },
-                  child: Text("Don\'t have an account? Sign Up here."))
+                  child: Text("Already have an account? Login."))
             ],
           ),
         ),
