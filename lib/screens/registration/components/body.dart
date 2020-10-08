@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 class Body extends StatelessWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
   var fullNameController = TextEditingController();
   var phoneNumberController = TextEditingController();
@@ -13,19 +14,29 @@ class Body extends StatelessWidget {
   var passwordController = TextEditingController();
 
   void registerUser() async {
-    final FirebaseUser user = (await _auth.createUserWithEmailAndPassword(
+    final UserCredential user =
+    (await FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: emailController.text,
       password: passwordController.text,
-    )).user;
+    ));
 
     if (user != null) {
-      print('Reg Successfull.');
+      print('Reg Successful.');
     }
+  }
+
+  void showSnackBar(String title) {
+    final snackBar = SnackBar(
+      content: Text(
+        title, textAlign: TextAlign.center, style: TextStyle(fontSize: 15),),
+    );
+    scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      key: scaffoldKey,
       child: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(16.0),
@@ -112,6 +123,28 @@ class Body extends StatelessWidget {
                       title: 'Register',
                       color: BrandColors.colorGreen,
                       onPressed: () {
+                        // Check Network Availability
+
+                        if (fullNameController.text.length < 3) {
+                          showSnackBar("Please provide your full name.");
+                          return;
+                        }
+
+                        if (phoneNumberController.text.length < 10) {
+                          showSnackBar("Please provide valid phone number.");
+                          return;
+                        }
+
+                        if (emailController.text.contains('@')) {
+                          showSnackBar("Please provide valid email address.");
+                          return;
+                        }
+
+                        if (passwordController.text.length < 8) {
+                          showSnackBar("Please provide password which is 8 character long.");
+                          return;
+                        }
+
                         registerUser();
                       },
                     ),
