@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: RegisterScreen(),
-      initialRoute: RegisterScreen.routeName,
+      initialRoute: MainPage.routeName,
       routes: {
         MainPage.routeName: (context) => MainPage(),
         RegisterScreen.routeName: (context) => RegisterScreen(),
