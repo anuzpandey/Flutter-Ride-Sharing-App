@@ -176,6 +176,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           if (connectivityResult != ConnectivityResult.mobile &&
                               connectivityResult != ConnectivityResult.wifi) {
                             showSnackBar("No Internet Connectivity.");
+                            return;
                           }
 
                           if (fullNameController.text.length < 3) {
