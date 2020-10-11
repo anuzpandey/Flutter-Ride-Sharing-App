@@ -1,5 +1,6 @@
 import 'package:cab_rider/assets/resources/brand_colors.dart';
 import 'package:cab_rider/components/fill_button.dart';
+import 'package:cab_rider/components/progress_dialog.dart';
 import 'package:cab_rider/screens/login/login_screen.dart';
 import 'package:cab_rider/screens/main_screen.dart';
 import 'package:connectivity/connectivity.dart';
@@ -29,6 +30,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   void registerUser() async {
     try {
+
+      showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) => ProgressDialog(
+          status: 'Registration in progress.',
+        ),
+      );
+
       final UserCredential user =
           (await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailController.text,
@@ -57,11 +67,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == "weak-password") {
+        Navigator.pop(context);
         showSnackBar("The password provided is too weak.");
       } else if (e.code == 'email-already-in-use') {
         showSnackBar("The account already exists for that email.");
       }
     } catch (e) {
+      Navigator.pop(context);
       print(e);
     }
   }

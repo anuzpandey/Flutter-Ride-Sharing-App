@@ -1,5 +1,6 @@
 import 'package:cab_rider/assets/resources/brand_colors.dart';
 import 'package:cab_rider/components/fill_button.dart';
+import 'package:cab_rider/components/progress_dialog.dart';
 import 'package:cab_rider/screens/main_screen.dart';
 import 'package:cab_rider/screens/registration/registration_screen.dart';
 import 'package:connectivity/connectivity.dart';
@@ -36,32 +37,43 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void login() async {
     try {
+      showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) => ProgressDialog(
+          status: 'Login you in.',
+        ),
+      );
+
       UserCredential user = await _auth.signInWithEmailAndPassword(
         email: emailController.text,
         password: passwordController.text,
       );
 
       if (user != null) {
-        DatabaseReference userRef = FirebaseDatabase.instance.reference().child(
-            'users/${_auth.currentUser.uid}');
+        DatabaseReference userRef = FirebaseDatabase.instance
+            .reference()
+            .child('users/${_auth.currentUser.uid}');
 
         userRef.once().then((DataSnapshot snapshot) => {
-        if (snapshot.value != null) {
-            Navigator.pushNamedAndRemoveUntil(context, MainPage.routeName, (
-                route) => false)
+              if (snapshot.value != null)
+                {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, MainPage.routeName, (route) => false)
+                }
+            });
       }
-    });
-
-    }
-
     } on FirebaseAuthException catch (e) {
-    if (e.code == 'user-not-found') {
-    print('No user found for that email.');
-    } else if (e.code == 'wrong-password') {
-    print('Wrong password provided for that user.');
-    }
+      if (e.code == 'user-not-found') {
+        Navigator.pop(context);
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        Navigator.pop(context);
+        print('Wrong password provided for that user.');
+      }
     } catch (e) {
-    print(e);
+      Navigator.pop(context);
+      print(e);
     }
   }
 
@@ -129,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: () async {
                           // Check Network Availability
                           var connectivityResult =
-                          await Connectivity().checkConnectivity();
+                              await Connectivity().checkConnectivity();
 
                           if (connectivityResult != ConnectivityResult.mobile &&
                               connectivityResult != ConnectivityResult.wifi) {
